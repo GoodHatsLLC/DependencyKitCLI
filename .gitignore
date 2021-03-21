@@ -1,2 +1,4 @@
 DependencyKitCLI.xcodeproj
+.swiftpm
+.build
 
