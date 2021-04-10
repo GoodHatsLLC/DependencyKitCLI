@@ -6,9 +6,12 @@ class DeclarationAndImplementationReader {
     let moduleParsingConfig: ModuleCodeParsingConfiguration
     private let declarationVisitor: DeclarationSyntaxVisitor
     
-    init(config: ModuleCodeParsingConfiguration, debugDump: Bool) {
+    init(config: ModuleCodeParsingConfiguration, displayDebugInfo: Bool) {
         self.moduleParsingConfig = config
-        self.declarationVisitor = DeclarationSyntaxVisitor(config: config, debugDump: debugDump)
+        self.declarationVisitor = DeclarationSyntaxVisitor(config: config, displayDebugInfo: displayDebugInfo)
+        if displayDebugInfo {
+            print("files: \(moduleParsingConfig.files)")
+        }
     }
  
     private func parseSources() -> [SourceFileSyntax] {

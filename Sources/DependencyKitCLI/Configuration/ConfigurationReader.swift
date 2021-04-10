@@ -3,14 +3,16 @@ import Foundation
 import Yams
 
 class ConfigurationReader {
-    
+
+    private let rootURL: URL
     private let configURL: URL
-    private let debugDump: Bool
+    private let displayDebugInfo: Bool
     private let decoder = YAMLDecoder()
     
-    init(configURL: URL, debugDump: Bool) {
+    init(rootURL: URL, configURL: URL, displayDebugInfo: Bool) {
+        self.rootURL = rootURL
         self.configURL = configURL
-        self.debugDump = debugDump
+        self.displayDebugInfo = displayDebugInfo
     }
     
     func getParsingConfiguration() -> CodeParsingConfiguration {
@@ -18,14 +20,13 @@ class ConfigurationReader {
         else { fatalError("Could not open YAML file at: \(configURL)") }
         guard let config = try? decoder.decode(ConfigurationFile.self, from: data)
         else { fatalError("Could not decode YAML config from file data from: \(configURL)") }
-        return CodeParsingConfiguration(debugDump: debugDump,
+        return CodeParsingConfiguration(displayDebugInfo: displayDebugInfo,
                                         modules: config.modules.map { parsingConfiguration(module: $0) })
     }
 
     private func parsingConfiguration(module: ModuleConfigurationFileInformation) -> ModuleCodeParsingConfiguration {
-        let workingDir = FS.pwd()
-        let modulePath = workingDir.appendingPathComponent(module.path)
-        let codegenFile = workingDir
+        let modulePath = rootURL.appendingPathComponent(module.path)
+        let codegenFile = rootURL
             .appendingPathComponent(module.path)
             .appendingPathComponent(module.codegenDirectory ?? CodegenConstants.codegenDirectory)
             .appendingPathComponent(module.codegenFile ?? CodegenConstants.codegenFile)

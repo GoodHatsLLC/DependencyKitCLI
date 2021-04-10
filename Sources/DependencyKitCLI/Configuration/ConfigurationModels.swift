@@ -12,7 +12,7 @@ struct ModuleConfigurationFileInformation: Codable {
 }
 
 struct CodeParsingConfiguration {
-    let debugDump: Bool
+    let displayDebugInfo: Bool
     let modules: [ModuleCodeParsingConfiguration]
 }
 

@@ -4,11 +4,14 @@ import Foundation
 struct CLIArguments {
     struct DependencyKit: ParsableArguments {
 
-        @Option(name: [.customShort("c"), .long], help: "A YAML config file")
-        var config: String
+        @Option(name: [.customShort("r"), .long], help: "Path to project [R]oot")
+        var rootPath: String
 
-        @Flag(name: [.customShort("d"), .long], help: "Debug Dump")
-        var debugDump: Bool = false
+        @Option(name: [.customShort("c"), .long], help: "Path to [C]onfig file")
+        var configPath: String
+
+        @Flag(name: [.customShort("d"), .long], help: "Enable [D]ebug info")
+        var debugInfo: Bool = false
 
     }
 }
