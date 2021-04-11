@@ -21,9 +21,8 @@ class ModuleWriter {
             }
     }
 
-    //var recreated: String { injected.recreated }
     private func requirementField(for field: FieldDefinition) -> String {
-        let optional = field.optional ? "? " : " "
+        let optional = field.optional ? "? " : " " // TODO: this is probably not robust
         let access = field.access.map { $0 + " " } ?? ""
         return
             access +
