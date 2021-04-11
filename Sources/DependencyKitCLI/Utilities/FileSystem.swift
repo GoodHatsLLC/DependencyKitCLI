@@ -11,10 +11,6 @@ class FileSystem {
             .filter { (try? $0.resourceValues(forKeys:[.isRegularFileKey]).isRegularFile) ?? false }
             ?? []
     }
-
-    static func pwd() -> URL {
-        URL(string: FileManager.default.currentDirectoryPath)!
-    }
 }
 
 typealias FS = FileSystem
