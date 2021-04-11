@@ -8,7 +8,7 @@ let configURL = URL(fileURLWithPath: yamlConfigPath)
 let configReader = ConfigurationReader(rootURL: rootURL, configURL: configURL, displayDebugInfo: args.debugInfo)
 let callConfiguration = configReader.getParsingConfiguration()
 let readers = callConfiguration.modules.map {
-    DeclarationAndImplementationReader(config: $0, displayDebugInfo: callConfiguration.displayDebugInfo)
+    ModuleReader(config: $0, displayDebugInfo: callConfiguration.displayDebugInfo)
 }
 let moduleDeclarations = readers.map { $0.parseModules() }
 if args.debugInfo {
@@ -17,5 +17,6 @@ if args.debugInfo {
     }
 }
 moduleDeclarations.forEach {
-    FS.writeFile(to: $0.parsingConfig.codegenFile, contents: "/*\n"+String(describing: $0)+"\n*/\n")
+    let writer = ModuleWriter(moduleDeclarations: $0)
+    FS.writeFile(to: $0.parsingConfig.codegenFile, contents: writer.moduleCodegenFileContents())
 }

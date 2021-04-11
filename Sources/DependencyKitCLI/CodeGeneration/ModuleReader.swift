@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSyntax
 
-class DeclarationAndImplementationReader {
+class ModuleReader {
     
     let moduleParsingConfig: ModuleCodeParsingConfiguration
     private let declarationVisitor: DeclarationSyntaxVisitor

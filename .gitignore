@@ -1,4 +1,6 @@
-DependencyKitCLI.xcodeproj
-.swiftpm
+.DS_Store
 .build
+.swiftpm
+*.xcodeproj/*
+notes.md
 

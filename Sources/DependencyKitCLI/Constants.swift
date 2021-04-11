@@ -5,6 +5,7 @@ struct CodegenConstants {
 	static var codegenFile = "Generated.swift"
 	static var swiftFileExtension = "swift"
     static var implicitGeneratedProtocolPrefix = "GENERATED_IMPLICIT_"
+    static var indent = String(repeating: " ", count: 4)
 }
 
 struct FrameworkConstants {
@@ -12,5 +13,7 @@ struct FrameworkConstants {
     static var requirementsProtocolString = "Requirements"
     static var nilRequirementsProtocolString = "NilRequirements"
     static var resourceClassString = "Resource"
+    static var resourceProtocolIdentifier = "ResourceType"
     static var nilResourceClassString = "NilResource"
+    static var genericI = "I"
 }
