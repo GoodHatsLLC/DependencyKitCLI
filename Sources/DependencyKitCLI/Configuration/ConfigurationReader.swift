@@ -30,21 +30,20 @@ class ConfigurationReader {
             .appendingPathComponent(module.path)
             .appendingPathComponent(module.codegenDirectory ?? CodegenConstants.codegenDirectory)
             .appendingPathComponent(module.codegenFile ?? CodegenConstants.codegenFile)
+        let excludedFiles = Set(
+            [codegenFile] +
+            (module.excludedFiles ?? [String]()).map{ modulePath.appendingPathComponent($0)}
+        )
         let files = FileSystem.find(modulePath)
             .filter { $0.pathExtension == CodegenConstants.swiftFileExtension }
-            .reduce(into: (application: [URL](), codegen: [URL]())) { (out, curr) in
-                // urls from FileManager are NSURLs with file:// scheme. Strip by using path.
-                if codegenFile.path == curr.path {
-                    out.codegen.append(curr)
-                } else {
-                    out.application.append(curr)
-                }
+            .reduce([URL]()) { (acc, curr) in
+                [curr].filter{ !excludedFiles.contains($0) } + acc
             }
-        assert(files.application.count == Set(files.application).count)
-        assert(files.codegen.count <= 1)
+        assert(files.count == Set(files).count)
         return ModuleCodeParsingConfiguration(name: module.name,
-                                              files: files.application,
-                                              codegenFile: files.codegen.first ?? codegenFile)
+                                              files: files,
+                                              excludedFiles: Array(excludedFiles),
+                                              codegenFile: codegenFile)
     }
     
 }

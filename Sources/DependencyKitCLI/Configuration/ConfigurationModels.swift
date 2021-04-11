@@ -9,6 +9,7 @@ struct ModuleConfigurationFileInformation: Codable {
     let name: String
     let codegenDirectory: String?
     let codegenFile: String?
+    let excludedFiles: [String]?
 }
 
 struct CodeParsingConfiguration {
@@ -19,5 +20,6 @@ struct CodeParsingConfiguration {
 struct ModuleCodeParsingConfiguration {
     let name: String
     let files: [URL]
+    let excludedFiles: [URL]
     let codegenFile: URL
 }

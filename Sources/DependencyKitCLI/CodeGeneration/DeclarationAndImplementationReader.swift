@@ -10,7 +10,16 @@ class DeclarationAndImplementationReader {
         self.moduleParsingConfig = config
         self.declarationVisitor = DeclarationSyntaxVisitor(config: config, displayDebugInfo: displayDebugInfo)
         if displayDebugInfo {
-            print("files: \(moduleParsingConfig.files)")
+            let header = "# Module: \(moduleParsingConfig.name)"
+            let separator = String(repeating: "#", count: header.count) + ""
+            print(separator)
+            print(header)
+            print(separator)
+            print("# Files: \(moduleParsingConfig.files.reduce("") { $0 + "\n#   - \($1)"})")
+            print("# Excluded files: \(moduleParsingConfig.excludedFiles.reduce("") {  $0 + "\n#   - \($1)"})")
+            print("# Codegen file: \n#    - \(moduleParsingConfig.codegenFile)")
+            print(String(repeating: "#", count: header.count) + "\n")
+            print("")
         }
     }
  
