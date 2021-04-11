@@ -1,0 +1,4 @@
+#!/bin/bash
+
+xcrun swiftc -frontend -emit-syntax $@
+
