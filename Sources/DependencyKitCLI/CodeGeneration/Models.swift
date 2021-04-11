@@ -20,7 +20,7 @@ struct FieldDefinition: Hashable, CustomStringConvertible {
 	let access: String?
     let optional: Bool
     
-    var description: String { "\(access ?? "") var \(identifier)\(optional ? "?" : ""): \(type)" }
+    var description: String { "\(access ?? "") var \(identifier): \(type)\(optional ? "?" : "")" }
 }
 
 struct Requirements: Hashable, CustomStringConvertible {
@@ -29,15 +29,21 @@ struct Requirements: Hashable, CustomStringConvertible {
 	let implicitGeneratedProtocol: String?
     let fields: [FieldDefinition]
 
-    private func fieldDescriptions() -> String {
-        "\(fields.reduce("") { $0 + "\n " + $1.description })\n"
+    private func accessDescription() -> String {
+        access.map { $0 + " " } ?? ""
+    }
+
+    private func fieldDescriptions() -> [String] {
+        fields.map(\.description)
     }
 
     var description: String {
         return
-            access.map{$0 + " "} ?? "" +
-            "protocol \(identifier): Requirements, \(implicitGeneratedProtocol ?? "")" +
-            "{\(fieldDescriptions())}"
+            accessDescription() +
+            "protocol \(identifier): Requirements\(implicitGeneratedProtocol.map {",\n#     \($0) "} ?? " " )" +
+            "{\n" +
+            "\(fieldDescriptions().reduce (""){ $0 + "#      \($1)\n"})" +
+            "#   }"
     }
 }
 
@@ -63,21 +69,16 @@ struct Resource: Hashable, CustomStringConvertible {
     private func declarationDescription() -> String {
         "class \(identifier)<I: \(genericIdentifier)>: Resource<I>"
     }
-
-    private func conformanceDescription() -> String {
-        "\(conformanceIdentifiers.reduce("") { $0 + ",\n " + $1 })"
-    }
-
-    private func fieldDescriptions() -> String {
-        "\(fields.reduce("") { $0 + "\n " + $1.description })\n"
-    }
     
     var description: String {
         return
             accessDescription() +
             declarationDescription() +
-            conformanceDescription() + "{\n" +
-            fieldDescriptions() + "}"
+            "\(conformanceIdentifiers.reduce("") { $0 + ",\n#     " + $1 })" +
+            "\(fields.reduce("") { $0 + "\n#       " + $1.description })" +
+            " {" +
+            "\n#       // TODO: indicate implementation" +
+            "\n#   }"
     }
 }
 
